@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="branch_names">
+        <item>Computer</item>
+        <item>IT</item>
+        <item>EXTC</item>
+        <item>ETRX</item>
+    </string-array>
+
+    <string-array name="year_names">
+        <item>FE</item>
+        <item>SE</item>
+        <item>TE</item>
+        <item>BE</item>
+    </string-array>
+</resources>

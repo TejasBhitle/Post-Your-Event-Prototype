@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#455a64</color>
+    <color name="colorPrimaryDark">#374850</color>
+    <color name="colorAccent">#F44336</color>
+    <color name="background">#e6e6e6</color>
+    <color name="card_background">#fdd835</color>
+
+    #fdd835
+    <color name="event_card_background">#fafafa</color>
+</resources>

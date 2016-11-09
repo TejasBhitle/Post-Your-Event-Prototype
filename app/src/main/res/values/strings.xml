@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Post Your Event</string>
+    <string name="about_app">A Material Design App \nTo Keep You Updated With College Events </string>
+    <string name="clicktolink">Developers\nClick to View Profiles</string>
+
+    <!-- Menu Items-->
+    <string name="myposts">Edit My Posts</string>
+    <string name="about">About</string>
+    <string name="feedback">Feedback</string>
+
+    <!-- Drawer Open Close-->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!--SnackBar-->
+    <string name="connection_restored">Connection Restored</string>
+    <string name="connection_lost">Connection Lost</string>
+    <string name="refreshing">Refreshing Data ....</string>
+    <string name="no_network">Unable To Fetch Data From Server</string>
+
+    <string name="about_string">
+        This App is Developed By Students of SE COMPS\n
+        Tejas Bhitle\n
+        Shlok Gujar\n
+        Aditya Desai\n
+        Aditya Bhave\n
+        Rutvij Mehta\n
+        Sushmen Chaudhari\n
+    </string>
+
+</resources>
