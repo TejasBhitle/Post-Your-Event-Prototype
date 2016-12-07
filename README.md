@@ -10,7 +10,7 @@ Android App for College Events at S.P.I.T
 <br>
 <H4>Open Source Libaries</H4>
 <ul>
-  <li>Firebase Libaries</li>
+  <li>Firebase Libraries</li>
   <li>Material Date Time Picker</li>
   <li>Android v7 Support Library</li>
 </ul>
