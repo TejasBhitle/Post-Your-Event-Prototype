@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import spit.postyourevent.R;
@@ -18,41 +19,29 @@ import spit.postyourevent.R;
 public class AboutPage extends AppCompatActivity {
 
     private Toolbar toolbar;
+    Button github;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.about_screen);
-        setTitle("About Page");
+        setContentView(R.layout.new_about_screen);
+        setTitle("About");
 
-        toolbar = (Toolbar)findViewById(R.id.toolbar2);
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-    public void Bhitle(View view){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/tejas-bhitle-ab6597126?authType=NAME_SEARCH&authToken=IlL2&locale=en_US&trk=tyah&trkInfo=clickedVertical%3Amynetwork%2CentityType%3AentityHistoryName%2CclickedEntityId%3Amynetwork_521005674%2Cidx%3A0"));
-        startActivity(browserIntent);
-    }
 
-    public void Bhave(View view){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/aditya-bhave-235765128?authType=NAME_SEARCH&authToken=wbck&locale=en_US&trk=tyah&trkInfo=clickedVertical%3Amynetwork%2CclickedEntityId%3A527408393%2CauthType%3ANAME_SEARCH%2Cidx%3A1-1-1%2CtarId%3A1477592122403%2Ctas%3AA"));
-        startActivity(browserIntent);
+        github =(Button)findViewById(R.id.github);
+        github.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Github();
+            }
+        });
     }
-    public void Desai(View view){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/aditya-desai?authType=NAME_SEARCH&authToken=BnFO&locale=en_US&trk=tyah&trkInfo=clickedVertical%3Amynetwork%2CclickedEntityId%3A521201294%2CauthType%3ANAME_SEARCH%2Cidx%3A1-5-5%2CtarId%3A1477591788459%2Ctas%3AA"));
-        startActivity(browserIntent);
-    }
-    public void Rutvij(View view){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/rutvij-mehta-778b65126?authType=NAME_SEARCH&authToken=o17C&locale=en_US&trk=tyah&trkInfo=clickedVertical%3Amynetwork%2CclickedEntityId%3A522432524%2CauthType%3ANAME_SEARCH%2Cidx%3A1-2-2%2CtarId%3A1477591934336%2Ctas%3AR"));
-        startActivity(browserIntent);
-    }
-    public void Shlok(View view){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/shlok-gujar-a30101128?authType=NAME_SEARCH&authToken=mphh&locale=en_US&trk=tyah&trkInfo=clickedVertical%3Amynetwork%2CclickedEntityId%3A525785220%2CauthType%3ANAME_SEARCH%2Cidx%3A1-2-2%2CtarId%3A1477591971259%2Ctas%3AS"));
-        startActivity(browserIntent);
-    }
-    public void Sushmen(View view){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/in/sushmen-chaudhari-a2a962130?authType=NAME_SEARCH&authToken=9ubE&locale=en_US&trk=tyah&trkInfo=clickedVertical%3Amynetwork%2CclickedEntityId%3A539845954%2CauthType%3ANAME_SEARCH%2Cidx%3A1-1-1%2CtarId%3A1477642653614%2Ctas%3ASushmen%20"));
-        startActivity(browserIntent);
-        //Toast.makeText(getApplicationContext(),"Not on LinkedIn Yet",Toast.LENGTH_SHORT).show();
+    public void Github(){
+        Uri uri = Uri.parse(getResources().getString(R.string.github));
+        Intent i = new Intent(Intent.ACTION_VIEW,uri);
+        startActivity(i);
     }
 }

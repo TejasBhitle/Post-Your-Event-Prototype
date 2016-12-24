@@ -157,30 +157,18 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 else
                                     no_connection_snackbar.show();
-
                                 break;
-
                             case R.id.aboutMenuItem:
-                                /*AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                builder.setMessage(R.string.about_string)
-                                        .setTitle("About us")
-                                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                //do nothing
-                                            }
-                                        });
-                                AlertDialog alertDialog = builder.create();
-
-                                alertDialog.show();*/
-
                                 Intent intent = new Intent(MainActivity.this,AboutPage.class);
                                 startActivity(intent);
                                 break;
-
-                            case R.id.feedback:
-                                Intent i = new Intent(MainActivity.this,FeedbackActivity.class);
+                            case R.id.developersMenuItem:
+                                Intent i = new Intent(MainActivity.this,DevelopersActivity.class);
                                 startActivity(i);
+                                break;
+                            case R.id.feedback:
+                                Intent intent1 = new Intent(MainActivity.this,FeedbackActivity.class);
+                                startActivity(intent1);
 
                         }
                         item.setChecked(true);

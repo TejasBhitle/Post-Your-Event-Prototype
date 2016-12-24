@@ -47,6 +47,9 @@
         <activity android:name=".Activites.FeedbackActivity"
             android:parentActivityName=".Activites.MainActivity"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".Activites.DevelopersActivity"
+            android:parentActivityName=".Activites.MainActivity"/>
     </application>
 
 </manifest>

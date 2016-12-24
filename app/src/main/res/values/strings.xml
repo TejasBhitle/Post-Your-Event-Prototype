@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Post Your Event</string>
-    <string name="about_app">A Material Design App \nTo Keep You Updated With College Events </string>
+    <string name="about_app">A Material Design App \nTo Keep You Updated With College Events \n\n
+    Icon Credits: Moonshine Icon Pack</string>
     <string name="clicktolink">Developers\nClick to View Profiles</string>
 
     <!-- Menu Items-->
@@ -27,5 +28,6 @@
         Rutvij Mehta\n
         Sushmen Chaudhari\n
     </string>
+    <string name="github">https://github.com/TejasBhitle/Post_Your_Event</string>
 
 </resources>
