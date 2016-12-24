@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">Post Your Event</string>
     <string name="about_app">A Material Design App \nTo Keep You Updated With College Events \n\n
-    Icon Credits: Moonshine Icon Pack</string>
-    <string name="clicktolink">Developers\nClick to View Profiles</string>
+    Icon Credits: Moonshine Icon Pack\n\nThis App was developed as a part of the Android Workshop Competition.</string>
 
     <!-- Menu Items-->
     <string name="myposts">Edit My Posts</string>
