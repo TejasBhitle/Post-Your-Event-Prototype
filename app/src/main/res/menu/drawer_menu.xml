@@ -19,9 +19,6 @@
             android:title="@string/about"
             android:id="@+id/aboutMenuItem"/>
         <item
-            android:title="Developers"
-            android:id="@+id/developersMenuItem"/>
-        <item
             android:title="Feedback"
             android:id="@+id/feedback"/>
     </group>

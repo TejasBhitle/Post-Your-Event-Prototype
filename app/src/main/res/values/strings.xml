@@ -18,14 +18,13 @@
     <string name="refreshing">Refreshing Data ....</string>
     <string name="no_network">Unable To Fetch Data From Server</string>
 
-    <string name="about_string">
-        This App is Developed By Students of SE COMPS\n
+    <string name="developers">
         Tejas Bhitle\n
         Shlok Gujar\n
         Aditya Desai\n
         Aditya Bhave\n
         Rutvij Mehta\n
-        Sushmen Chaudhari\n
+        Sushmen Chaudhari
     </string>
     <string name="github">https://github.com/TejasBhitle/Post_Your_Event</string>
 

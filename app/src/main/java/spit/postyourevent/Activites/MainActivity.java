@@ -2,7 +2,6 @@ package spit.postyourevent.Activites;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -12,23 +11,18 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,11 +32,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 import spit.postyourevent.Constants;
 import spit.postyourevent.CustomAdapter;
@@ -66,9 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private Button header_Button;
     private TextView noItemTextView;
     private ArrayList<EventData> eventDataArrayList;
-
     private DatabaseReference root,eventRef;
-
     private  Snackbar no_connection_snackbar;
 
     private RecyclerView myrecyclerView;
@@ -77,18 +66,14 @@ public class MainActivity extends AppCompatActivity {
 
     private ValueEventListener valueEventListener;
 
-
-
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         toolbar =(Toolbar)findViewById(R.id.nav_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-
 
         navigationView=(NavigationView)findViewById(R.id.navigation_view);
         drawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
@@ -98,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
         myrecyclerView = (RecyclerView)findViewById(R.id.main_recyclerView);
         no_connection_snackbar = Snackbar.make(coordinatorLayout,"No Connection",Snackbar.LENGTH_SHORT);
         noItemTextView = (TextView)findViewById(R.id.noItemTextView);
-
-
 
         root = FirebaseDatabase.getInstance().getReference();
 
@@ -128,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
         actionBarDrawerToggle= new ActionBarDrawerToggle(this,drawerLayout,toolbar,
                 R.string.drawer_open,R.string.drawer_close);
@@ -162,14 +144,10 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent = new Intent(MainActivity.this,AboutPage.class);
                                 startActivity(intent);
                                 break;
-                            case R.id.developersMenuItem:
-                                Intent i = new Intent(MainActivity.this,DevelopersActivity.class);
-                                startActivity(i);
-                                break;
                             case R.id.feedback:
                                 Intent intent1 = new Intent(MainActivity.this,FeedbackActivity.class);
                                 startActivity(intent1);
-
+                                break;
                         }
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
@@ -185,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onRefresh() {
                     //refreshData
-
                     if(isConnected(getApplicationContext())){
                         refreshData();
                     }
@@ -203,8 +180,6 @@ public class MainActivity extends AppCompatActivity {
         else{
             no_connection_snackbar.show();
         }
-
-
     }
 
     private void updateUI(final ArrayList<EventData> eventDataArrayList) {
@@ -290,7 +265,6 @@ public class MainActivity extends AppCompatActivity {
         task.execute();
     }
 
-
     private class FetchAllDataTask extends AsyncTask<String,Void,ArrayList<EventData>>{
 
         public FetchAllDataTask() {
@@ -344,27 +318,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            case R.id.setUser_info_menuItem:
-                if(isConnected(getBaseContext())){
-                    Intent intent =  new Intent(MainActivity.this, SetUserInfo.class);
-                    startActivity(intent);
-                }
-                else
-                    no_connection_snackbar.show();
-
-                break;
-
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-
     public boolean isConnected(Context context){
         if(context == null){
             return true;
@@ -377,23 +330,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.mainactivity_menu,menu);
-        return true;
-    }*/
 
     @Override
     protected void onPause() {
         unregisterReceiver(broadcastReceiver);
         super.onPause();
-        //root.removeEventListener(valueEventListener);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
         actionBarDrawerToggle.syncState();
     }
 
