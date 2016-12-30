@@ -53,12 +53,12 @@ public class MainActivity extends AppCompatActivity {
     private CoordinatorLayout coordinatorLayout;
     private BroadcastReceiver broadcastReceiver;
     private FloatingActionButton fab;
-    private View header;
+    private View header,No_net_layout;
     private Button header_Button;
     private TextView noItemTextView;
     private ArrayList<EventData> eventDataArrayList;
     private DatabaseReference root,eventRef;
-    private  Snackbar no_connection_snackbar;
+    private Snackbar no_connection_snackbar;
 
     private RecyclerView myrecyclerView;
     private RecyclerView.Adapter Myadapter;
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         myrecyclerView = (RecyclerView)findViewById(R.id.main_recyclerView);
         no_connection_snackbar = Snackbar.make(coordinatorLayout,"No Connection",Snackbar.LENGTH_SHORT);
         noItemTextView = (TextView)findViewById(R.id.noItemTextView);
+        No_net_layout =(View)findViewById(R.id.no_net_layout) ;
 
         root = FirebaseDatabase.getInstance().getReference();
 
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     Snackbar.make(coordinatorLayout,"No Connection",Snackbar.LENGTH_SHORT).show();
+
                 }
             }
         });

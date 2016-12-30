@@ -20,10 +20,44 @@
             android:background="?attr/colorPrimary"
             android:elevation="10dp"/>
 
-        <include
-            layout="@layout/content_main"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/content_main"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+
+            <RelativeLayout
+                android:id="@+id/no_net_layout"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/text_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Network Connection"
+                    android:textSize="20dp"
+                    android:layout_centerInParent="true"
+                    android:textAlignment="center"/>
+
+                <ImageView
+                    android:id="@+id/no_net_image"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_above="@id/text_no"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/svg_cloud_off_black_36px"/>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
 
     </LinearLayout>
 
