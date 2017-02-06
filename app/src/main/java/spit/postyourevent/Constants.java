@@ -18,5 +18,6 @@ public final class Constants {
     public static final String USER_ROLL_NO = "userroll_no";
     public static final String USER_BRANCH = "userbranch";
     public static final String USER_YEAR = "useryear";
+    public static final String USER_UID="user_uid";
 
 }

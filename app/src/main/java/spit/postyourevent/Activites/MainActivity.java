@@ -1,12 +1,17 @@
 package spit.postyourevent.Activites;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,6 +19,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,15 +32,28 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.ResultCodes;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import spit.postyourevent.Constants;
 import spit.postyourevent.CustomAdapter;
 import spit.postyourevent.Database.EventData;
@@ -43,7 +62,7 @@ import spit.postyourevent.Login.NewLogin;
 import spit.postyourevent.R;
 import spit.postyourevent.RecyclerItemClickListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -54,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
     private FloatingActionButton fab;
     private View header,No_net_layout;
-    private Button header_Button;
-    private TextView noItemTextView;
+    //private Button header_Button;
+    private TextView noItemTextView,header_text1,header_text2;
     private ArrayList<EventData> eventDataArrayList;
     private DatabaseReference root,eventRef;
     private Snackbar no_connection_snackbar;
@@ -65,6 +84,26 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager MylayoutManager;
 
     private ValueEventListener valueEventListener;
+
+    private CircleImageView profile_pic;
+
+    private final int RC_SIGN_IN =123;
+    FirebaseAuth auth;
+    final String LOG ="MAINACTIVITY";
+
+    private static final String TAG = "signin1";
+    private GoogleApiClient mGoogleApiClient;
+    private static final int STATE_SIGNED_IN = 0;
+    private static final int STATE_SIGN_IN = 1;
+    private static final int STATE_IN_PROGRESS = 2;
+    private int mSignInProgress;
+
+    private PendingIntent mSignInIntent;
+    private int mSignInError;
+
+    private static final int RC_SIGN_IN2 = 0;
+
+    private static final int DIALOG_PLAY_SERVICES_ERROR = 0;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -87,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
 
         root = FirebaseDatabase.getInstance().getReference();
 
+
+
         MylayoutManager = new LinearLayoutManager(this);
         myrecyclerView.setLayoutManager(MylayoutManager);
 
@@ -99,18 +140,19 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     Snackbar.make(coordinatorLayout,"No Connection",Snackbar.LENGTH_SHORT).show();
-
                 }
             }
         });
 
         header = navigationView.getHeaderView(0);
-        header_Button = (Button)header.findViewById(R.id.header_signin);
-        header_Button.setOnClickListener(new View.OnClickListener() {
+        profile_pic = (CircleImageView)header.findViewById(R.id.profile_pic);
+        header_text1 =(TextView)header.findViewById(R.id.headerText1);
+        header_text2 =(TextView)header.findViewById(R.id.headerText2);
+
+        header_text2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, NewLogin.class);
-                startActivity(intent);
+            public void onClick(View view) {
+                createSignOutDialog();
             }
         });
 
@@ -176,12 +218,30 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        checkUserSignedIn();
+
         /*Initial*/
         if(isConnected(getBaseContext()))
             refreshData();
         else{
             no_connection_snackbar.show();
         }
+
+
+    }
+
+    private void createSignOutDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Info")
+                .setNeutralButton("Sign Out", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(getApplicationContext(),"Signed out",Toast.LENGTH_SHORT).show();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void updateUI(final ArrayList<EventData> eventDataArrayList) {
@@ -224,6 +284,80 @@ public class MainActivity extends AppCompatActivity {
         );
 
     }
+
+    private void checkUserSignedIn(){
+        //to check if the user is signed in
+        auth = FirebaseAuth.getInstance();
+        if(auth.getCurrentUser() != null){
+
+        }
+        else{
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setIsSmartLockEnabled(false)
+                            .setTheme(R.style.AppTheme)
+                            .setProviders(Arrays.asList(
+                                    new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                            .build(),RC_SIGN_IN);
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            // Successfully signed in
+            if (resultCode == ResultCodes.OK) {
+                /*GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                GoogleSignInAccount acct = result.getSignInAccount();
+                String personName = acct.getDisplayName();
+                String personGivenName = acct.getGivenName();
+                String personFamilyName = acct.getFamilyName();
+                String personEmail = acct.getEmail();
+                String personId = acct.getId();
+                Uri personPhoto = acct.getPhotoUrl();
+                header_text1.setText(personName);*/
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if(user!= null){
+                    String name = user.getDisplayName();
+                    Uri pic_uri = user.getPhotoUrl();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), pic_uri);
+                        profile_pic.setImageBitmap(bitmap);
+                        header_text1.setText(name);
+
+                    }
+                    catch (IOException e){}
+                }
+                startActivity(new Intent(MainActivity.this,SetUserInfo.class));
+
+                return;
+            } else {
+                // Sign in failed
+                if (response == null) {
+                    // User pressed back button
+                    //  showSnackbar(R.string.sign_in_cancelled);
+                    return;
+                }
+
+                if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    //    showSnackbar(R.string.no_internet_connection);
+                    return;
+                }
+
+                if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                    //      showSnackbar(R.string.unknown_error);
+                    return;
+                }
+            }
+            //showSnackbar(R.string.unknown_sign_in_response);
+        }
+    }
+
 
     @Override
     protected void onResume() {
@@ -294,8 +428,9 @@ public class MainActivity extends AppCompatActivity {
                         String time = (String) snapshot.child(Constants.EVENT_TIME).getValue();
                         String venue = (String) snapshot.child(Constants.EVENT_VENUE).getValue();
                         String user = (String) snapshot.child(Constants.EVENT_USER).getValue();
+                        String user_uid =(String) snapshot.child(Constants.USER_UID).getValue();
 
-                        EventData eventData = new EventData(name,descrip,time,venue,user);
+                        EventData eventData = new EventData(name,descrip,time,venue,user,user_uid);
                         eventDataArrayList.add(eventData);
                     }
                     //Toast.makeText(getApplicationContext(),"Data Fetched",Toast.LENGTH_SHORT).show();

@@ -106,9 +106,6 @@ public class MyPostsActivity extends AppCompatActivity {
         task.execute();
     }
 
-
-
-
     private void updateUI(final ArrayList<EventData> arrayList) {
 
         swipeRefreshLayout.setRefreshing(false);
@@ -117,11 +114,14 @@ public class MyPostsActivity extends AppCompatActivity {
         myrecyclerView.setAdapter(Myadapter);
         myrecyclerView.scrollToPosition(0);
 
+
+
         myrecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnClickItemInterface() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        EventData ed = arrayList.get(position);
+                        Toast.makeText(getApplicationContext(),"Edit Feature Yet to be implemented",Toast.LENGTH_SHORT).show();
+                        /*EventData ed = arrayList.get(position);
                         Intent i = new Intent();
                         i.setClass(MyPostsActivity.this, MyPostDescription.class);
                         i.putExtra(Constants.EVENT_NAME, ed.getName());
@@ -129,7 +129,7 @@ public class MyPostsActivity extends AppCompatActivity {
                         i.putExtra(Constants.EVENT_TIME,ed.geteventTime());
                         i.putExtra(Constants.EVENT_DESCRIPTION,ed.getDescription());
                         i.putExtra(Constants.EVENT_USER,ed.getUserName());
-                        startActivity(i);
+                        startActivity(i);*/
                     }
                 }));
     }
@@ -166,9 +166,11 @@ public class MyPostsActivity extends AppCompatActivity {
                         String time = (String) snapshot.child(Constants.EVENT_TIME).getValue();
                         String venue = (String) snapshot.child(Constants.EVENT_VENUE).getValue();
                         String user = (String) snapshot.child(Constants.EVENT_USER).getValue();
+                        String user_uid =(String) snapshot.child(Constants.USER_UID).getValue();
 
-                        if (user.matches(username)){
-                            EventData eventData = new EventData(name,descrip,time,venue,user);
+                        String this_user_id= sharedPrefs.getString(Constants.USER_UID,"");
+                        if (this_user_id.matches(user_uid)){
+                            EventData eventData = new EventData(name,descrip,time,venue,user,user_uid);
                             userPostArrayList.add(eventData);
                         }
 

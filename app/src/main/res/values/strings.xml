@@ -4,7 +4,7 @@
     Icon Credits: Moonshine Icon Pack\n\nThis App was developed as a part of the Android Workshop Competition.</string>
 
     <!-- Menu Items-->
-    <string name="myposts">Edit My Posts</string>
+    <string name="myposts">My Posts</string>
     <string name="about">About</string>
     <string name="feedback">Feedback</string>
 

@@ -15,16 +15,19 @@ public class EventData {
     private String eventTime;
     private String venue;
     private String userName;
+    private String userUid;
+
 
     public EventData() {
     }
 
-    public EventData(String name, String description, String eventTime, String venue, String userData ) {
+    public EventData(String name, String description, String eventTime, String venue, String userData ,String userUid) {
         this.description = description;
         this.name = name;
         this.eventTime = eventTime;
         this.userName = userData;
         this.venue = venue;
+        this.userUid = userUid;
     }
 
     public HashMap<String,Object> getHashMap(){
@@ -34,6 +37,7 @@ public class EventData {
         hashmap.put(Constants.EVENT_TIME,eventTime);
         hashmap.put(Constants.EVENT_VENUE,venue);
         hashmap.put(Constants.EVENT_USER,userName.replace("@gmail.com",""));
+        hashmap.put(Constants.USER_UID,userUid);
         return hashmap;
     }
 
@@ -75,5 +79,21 @@ public class EventData {
 
     public void setVenue(String venue) {
         this.venue = venue;
+    }
+
+    public String getEventTime() {
+        return eventTime;
+    }
+
+    public void setEventTime(String eventTime) {
+        this.eventTime = eventTime;
+    }
+
+    public String getUserUid() {
+        return userUid;
+    }
+
+    public void setUserUid(String userUid) {
+        this.userUid = userUid;
     }
 }

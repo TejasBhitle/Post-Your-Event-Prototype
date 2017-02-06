@@ -7,13 +7,47 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:background="@color/colorPrimaryDark">
 
-    <Button
-        android:id="@+id/header_signin"
+    <LinearLayout
+        android:id="@+id/nav_header_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Sign In (BETA)"
-        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"/>
+        android:layout_marginBottom="15dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:paddingTop="18dp">
 
+        <TextView
+            android:id="@+id/headerText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="Sign in"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/headerText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="More" />
+
+    </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_pic"
+        android:src="@drawable/account_circle_white_36px"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_above="@id/nav_header_button"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp" />
 
 </RelativeLayout>

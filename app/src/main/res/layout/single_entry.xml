@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="EventName"
+            android:gravity="center"
             android:textAlignment="center"
             android:id="@+id/custom_row_eventname"
             android:layout_marginTop="20dp" />
@@ -32,7 +33,8 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="time" />
+                android:text="time"
+                android:gravity="center"/>
 
 
 

@@ -117,8 +117,10 @@ public class AddEvent extends AppCompatActivity {
             if(user_emailid.matches("")){
                 Toast.makeText(getApplicationContext(),"Enter User information",Toast.LENGTH_SHORT).show();
             }
-            else
-                postThisEvent(new EventData(name,description,eventTime,venue,user_emailid));
+            else{
+                String user_id = sharedPrefs.getString(Constants.USER_UID,"");
+                postThisEvent(new EventData(name,description,eventTime,venue,user_emailid,user_id));
+            }
 
         }
 

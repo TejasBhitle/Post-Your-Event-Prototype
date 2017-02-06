@@ -68,8 +68,8 @@ public class MyPostDescription extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Yet To Code",Toast.LENGTH_SHORT).show();
-                //onPostButtonClicked();
+                //Toast.makeText(getApplicationContext(),"Yet To Code",Toast.LENGTH_SHORT).show();
+                onPostButtonClicked();
             }
         });
     }
@@ -91,7 +91,8 @@ public class MyPostDescription extends AppCompatActivity {
             }
             else{
                 try{
-                    postThisEvent(new EventData(s_name,s_description,s_eventTime,s_venue,user_emailid));
+                    String userUid = sharedPrefs.getString(Constants.USER_UID,"");
+                    postThisEvent(new EventData(s_name,s_description,s_eventTime,s_venue,user_emailid,userUid));
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -114,10 +115,9 @@ public class MyPostDescription extends AppCompatActivity {
 
             HashMap<String,Object> updateHashMap = new HashMap<>();
 
-
-            key = getUpdateKey(root,eventData);
+            DatabaseReference eventRef = root.child(Constants.EVENT);
+            key = getUpdateKey(eventRef,eventData);
             if(key != null){
-
                 updateHashMap.put("/"+Constants.EVENT+"/" + key,eventHashmap);
                 root.setValue( updateHashMap, new DatabaseReference.CompletionListener() {
                     @Override
@@ -131,6 +131,7 @@ public class MyPostDescription extends AppCompatActivity {
                     }
                 });
             }
+            else{Toast.makeText(getApplicationContext(),"key null",Toast.LENGTH_SHORT).show();}
         }
         catch (Exception e){e.printStackTrace();}
 
@@ -140,15 +141,24 @@ public class MyPostDescription extends AppCompatActivity {
     }
 
     private String getUpdateKey(DatabaseReference reference,final EventData eventData){
+        ValueEventListener listener;
         try{
-            reference.addValueEventListener(new ValueEventListener() {
+
+            listener=new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                         String name = (String) snapshot.child(Constants.EVENT_NAME).getValue();
                         String user = (String) snapshot.child(Constants.EVENT_USER).getValue();
+                        String time =(String )snapshot.child(Constants.EVENT_TIME).getValue();
+                        String user_Uid =(String) snapshot.child(Constants.USER_UID).getValue();
 
-                        if(name.matches(eventData.getName())&& user.matches(eventData.getUserName())){
+                        String userUid = sharedPrefs.getString(Constants.USER_UID,"");
+                        if(name.matches(eventData.getName())
+                                && user.matches(eventData.getUserName())
+                                && time.matches(eventData.geteventTime()
+                               )
+                                ){
                             eventkey = snapshot.getKey();
                             break;
                         }
@@ -159,7 +169,8 @@ public class MyPostDescription extends AppCompatActivity {
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
-            });
+            };
+            reference.addValueEventListener(listener);
             return eventkey;
 
         }catch (Exception e){e.printStackTrace();}
