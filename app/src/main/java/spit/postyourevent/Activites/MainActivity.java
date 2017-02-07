@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -40,6 +42,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -49,6 +52,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,6 +65,7 @@ import spit.postyourevent.CustomAdapter;
 import spit.postyourevent.Database.EventData;
 import spit.postyourevent.Login.Login;
 import spit.postyourevent.Login.NewLogin;
+import spit.postyourevent.Login.SigninActivity;
 import spit.postyourevent.R;
 import spit.postyourevent.RecyclerItemClickListener;
 
@@ -92,18 +99,9 @@ public class MainActivity extends AppCompatActivity{
     final String LOG ="MAINACTIVITY";
 
     private static final String TAG = "signin1";
-    private GoogleApiClient mGoogleApiClient;
-    private static final int STATE_SIGNED_IN = 0;
-    private static final int STATE_SIGN_IN = 1;
-    private static final int STATE_IN_PROGRESS = 2;
-    private int mSignInProgress;
 
-    private PendingIntent mSignInIntent;
-    private int mSignInError;
+    SharedPreferences prefs;
 
-    private static final int RC_SIGN_IN2 = 0;
-
-    private static final int DIALOG_PLAY_SERVICES_ERROR = 0;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -127,6 +125,8 @@ public class MainActivity extends AppCompatActivity{
         root = FirebaseDatabase.getInstance().getReference();
 
 
+        prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+
 
         MylayoutManager = new LinearLayoutManager(this);
         myrecyclerView.setLayoutManager(MylayoutManager);
@@ -148,6 +148,25 @@ public class MainActivity extends AppCompatActivity{
         profile_pic = (CircleImageView)header.findViewById(R.id.profile_pic);
         header_text1 =(TextView)header.findViewById(R.id.headerText1);
         header_text2 =(TextView)header.findViewById(R.id.headerText2);
+
+        //String pic_uri = prefs.getString(Constants.PROFILE_PIC_URI,"");
+       /* try {
+
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(pic_uri));
+            profile_pic.setImageBitmap(bitmap);
+        }
+        catch (Exception e){}*/
+        header_text1.setText(prefs.getString(Constants.USER_NAME,""));
+        try {
+            String URL = prefs.getString(Constants.PROFILE_PIC_URI, "");
+            Log.e("PROFILE_IMAGE",URL);
+            Bitmap bitmap = getBitmapFromURL(URL);
+            profile_pic.setImageBitmap(bitmap);
+        }
+        catch (Exception e){}
+
+
+
 
         header_text2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,6 +211,9 @@ public class MainActivity extends AppCompatActivity{
                                 Intent intent1 = new Intent(MainActivity.this,FeedbackActivity.class);
                                 startActivity(intent1);
                                 break;
+                            case R.id.developerMenuItem:
+                                startActivity(new Intent(MainActivity.this,DeveloperActivity.class));
+                                break;
                         }
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
@@ -218,7 +240,7 @@ public class MainActivity extends AppCompatActivity{
             });
         }
 
-        checkUserSignedIn();
+        //checkUserSignedIn();
 
         /*Initial*/
         if(isConnected(getBaseContext()))
@@ -227,17 +249,34 @@ public class MainActivity extends AppCompatActivity{
             no_connection_snackbar.show();
         }
 
-
     }
 
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }
     private void createSignOutDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Info")
+        builder.setTitle(prefs.getString(Constants.USER_NAME,""))
                 .setNeutralButton("Sign Out", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        FirebaseAuth.getInstance().signOut();
-                        Toast.makeText(getApplicationContext(),"Signed out",Toast.LENGTH_SHORT).show();
+                        //FirebaseAuth.getInstance().signOut();
+                        //Plus.AccountApi.clearDefaultAccount(SigninActivity.mGoogleApiClient);
+                        //SigninActivity.mGoogleApiClient.disconnect();
+                        //SigninActivity.mGoogleApiClient.connect();
+                        //startActivity(new Intent(MainActivity.this,SigninActivity.class));
+                        Toast.makeText(getApplicationContext(),"Yet to be implemented",Toast.LENGTH_SHORT).show();
                     }
                 });
         AlertDialog alertDialog = builder.create();
@@ -304,7 +343,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    /*protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
         if (requestCode == RC_SIGN_IN) {
@@ -321,7 +360,7 @@ public class MainActivity extends AppCompatActivity{
                 String personId = acct.getId();
                 Uri personPhoto = acct.getPhotoUrl();
                 header_text1.setText(personName);*/
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user!= null){
                     String name = user.getDisplayName();
                     Uri pic_uri = user.getPhotoUrl();
@@ -356,7 +395,7 @@ public class MainActivity extends AppCompatActivity{
             }
             //showSnackbar(R.string.unknown_sign_in_response);
         }
-    }
+    }*/
 
 
     @Override
@@ -480,5 +519,9 @@ public class MainActivity extends AppCompatActivity{
         actionBarDrawerToggle.syncState();
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
 

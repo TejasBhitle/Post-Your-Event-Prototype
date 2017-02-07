@@ -23,4 +23,14 @@
         <item name="android:layout_margin">5dp</item>
     </style>
 
+
+    <style name="ADevCard" parent="CardView">
+        <item name="cardBackgroundColor">@color/developer_bg</item>
+        <item name="cardCornerRadius">5dp</item>
+        <item name="cardElevation">5dp</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+
+
 </resources>

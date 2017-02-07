@@ -55,6 +55,8 @@ public class SetUserInfo extends AppCompatActivity {
 
         /*instantiation*/
         nameEditText = (EditText)findViewById(R.id.setUser_name);
+        //nameEditText.setEnabled(false);
+        nameEditText.setFocusable(false);
         emailId_EditText = (EditText)findViewById(R.id.setUser_emailid);
         contact_EditText = (EditText)findViewById(R.id.setUser_contact);
         //branch_EditText = (EditText)findViewById(R.id.setUser_branch);
@@ -147,10 +149,10 @@ public class SetUserInfo extends AppCompatActivity {
         }
         else {
             editor = sharedPreferences.edit();
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            String user_uid;
-            if(user!= null) {
-                user_uid= user.getUid();
+            //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String user_uid = sharedPreferences.getString(Constants.USER_UID,"");
+            //if(user!= null) {
+                //user_uid= user.getUid();
                 Log.e("SetUserInfo","user uid added to shared prefs");
 
                 editor.putString(Constants.USER_NAME, name);
@@ -166,10 +168,9 @@ public class SetUserInfo extends AppCompatActivity {
             uploadUserToFireBase();
             Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
             finish();
-            }
-            else{
-                Toast.makeText(getApplicationContext(),"Sign in First ",Toast.LENGTH_SHORT).show();
-            }
+            //}
+            //else{
+             //   Toast.makeText(getApplicationContext(),"Sign in First ",Toast.LENGTH_SHORT).show();}
         }
     }
 
@@ -180,14 +181,15 @@ public class SetUserInfo extends AppCompatActivity {
 
         root = FirebaseDatabase.getInstance().getReference();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        String userId;
-        if (user!= null){ userId = user.getUid();
+
+        String userId = sharedPreferences.getString(Constants.USER_UID,"");
+        //if (user!= null){ userId = user.getUid();
             DatabaseReference userRef = root.child(Constants.USER);
             userRef.child(userId).setValue(usermap);
-        }
-        else Toast.makeText(getApplication(),"Please Sign in first",Toast.LENGTH_SHORT).show();
+        //}
+        //else Toast.makeText(getApplication(),"Please Sign in first",Toast.LENGTH_SHORT).show();
 
     }
 

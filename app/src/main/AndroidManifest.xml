@@ -20,10 +20,13 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
 
-        <activity android:name=".Activites.MainActivity">
+        <activity android:name=".Activites.MainActivity"
+            android:parentActivityName=".Login.SigninActivity">
+        </activity>
+
+        <activity android:name=".Login.SigninActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -55,6 +58,9 @@
         <activity android:name=".Activites.FeedbackActivity"
             android:parentActivityName=".Activites.MainActivity"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".Activites.DeveloperActivity"
+            android:parentActivityName=".Activites.MainActivity"/>
 
     </application>
 

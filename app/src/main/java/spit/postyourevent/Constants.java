@@ -20,4 +20,6 @@ public final class Constants {
     public static final String USER_YEAR = "useryear";
     public static final String USER_UID="user_uid";
 
+    public static final String PROFILE_PIC_URI= "profilepicuri";
+
 }
